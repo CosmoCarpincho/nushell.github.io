@@ -37,9 +37,9 @@ Primero, el código fuente es analizado por el Parser y convertido en una repres
 
 Esto, también, es común en los lenguajes interpretados. Por ejemplo, el código fuente de Python generalmente se [convierte en bytecode](https://github.com/python/cpython/blob/main/InternalDocs/interpreter.md) antes de la evaluación.
 
-### Compiled Languages
+### Lenguajes compilados
 
-On the other side are languages that are typically "compiled", such as C, C++, or Rust. For example, here's a simple _"Hello, World!"_ in Rust:
+Por otro lado,  están los lenguajes típicamente «compilados», como C, C++ o Rust. Por ejemplo, aquí hay un simple _"Hello, World!"_ en Rust:
 
 ```rust
 // main.rs
@@ -49,19 +49,19 @@ fn main() {
 }
 ```
 
-To "run" this code, it must be:
+Para "ejecutar" este código, debe ser:
 
-1. Compiled into [machine code instructions](https://en.wikipedia.org/wiki/Machine_code)
-2. The compilation results stored as a binary file one the disk
+1. Compilado en [instrucciones de código máquina](https://en.wikipedia.org/wiki/Machine_code)
+2. Los resultados de la compilación almacenados como un archivo binario en el disco
 
-The first two steps are handled with `rustc main.rs`.
+Los primeros dos pasos se manejan con `rustc main.rs`.
 
-3. Then, to produce a result, you need to run the binary (`./main`), which passes the instructions to the CPU
+3. Luego, para producir un resultado, necesitas ejecutar el binario (`./main`), que pasa las instrucciones a la CPU.
 
-So:
+Entonces:
 
-1. `Source Code ⇒ Compiler ⇒ Machine Code`
-2. `Machine Code ⇒ CPU ⇒ Result`
+1. `Código fuente ⇒ Compilador ⇒ Código máquina` (Source Code ⇒ Compiler ⇒ Machine Code)
+2. `Código máquina ⇒ CPU ⇒ Resultado` (Machine Code ⇒ CPU ⇒ Result)
 
 ::: important
 You can see that the compile-run sequence is not much different from the parse-evaluate sequence of an interpreter. You begin with source code, parse (or compile) it into some state (e.g., bytecode, IR, machine code), then evaluate (or run) the IR to get a result. You could think of machine code as just another type of IR and the CPU as its interpreter.
