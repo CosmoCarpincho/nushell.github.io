@@ -65,20 +65,21 @@ Entonces:
 
 ::: important
 You can see that the compile-run sequence is not much different from the parse-evaluate sequence of an interpreter. You begin with source code, parse (or compile) it into some state (e.g., bytecode, IR, machine code), then evaluate (or run) the IR to get a result. You could think of machine code as just another type of IR and the CPU as its interpreter.
+Puedes ver que la secuencia compilar-ejecutar (compile-run) no es muy diferente de la secuencia analizar-evaluar (parse-evaluate) de un intérprete. Comienzas con código fuente, lo analizas "parseas" (o compilas) en algún estado (p. ej., bytecode, IR, código máquina), luego evalúas (o ejecutas) el IR para obtener un resultado. Podrías pensar en el código máquina como otro tipo de IR y en la CPU como su intérprete.
 
-One big difference, however, between interpreted and compiled languages is that interpreted languages typically implement an _`eval` function_ while compiled languages do not. What does this mean?
+Una gran diferencia, sin embargo, entre los lenguajes interpretados y compilados es que los lenguajes interpretados generalmente implementan una función _`eval`_, mientras que los lenguajes compilados no. ¿Qué significa esto?
 :::
 
-## Dynamic vs. Static Languages
+## Lenguajes dinámicos vs estáticos
 
-::: tip Terminology
-In general, the difference between a dynamic and static language is how much of the source code is resolved during Compilation (or Parsing) vs. Evaluation/Runtime:
+::: tip Terminología
+En general, la diferencia entre un lenguaje dinámico y uno estático es cuánta parte del código fuente se resuelve durante la compilación (o análisis -parsing-) vs. la evaluación/ejecución (Evaluation/Runtime):
 
-- _"Static"_ languages perform more code analysis (e.g., type-checking, [data ownership](https://doc.rust-lang.org/stable/book/ch04-00-understanding-ownership.html)) during Compilation/Parsing.
+- Los lenguajes _"estáticos"_ realizan más análisis de código (p. ej., verificación de tipos (type-checking), [propiedad de los datos (data ownership)](https://doc.rust-lang.org/stable/book/ch04-00-understanding-ownership.html)) durante la compilación/análisis (Compilation/Parsing).
 
-- _"Dynamic"_ languages perform more code analysis, including `eval` of additional code, during Evaluation/Runtime.
+- Los lenguajes _"dinámicos"_ realizan más análisis de código, incluyendo `eval` de código adicional, durante la evaluación/ejecución (Evaluation/Runtime).
 
-For the purposes of this discussion, the primary difference between a static and dynamic language is whether or not it has an `eval` function.
+Para los propósitos de esta discusión, la principal diferencia entre un lenguaje estático y dinámico es si tiene o no una función `eval`.
 
 :::
 
