@@ -83,12 +83,14 @@ Para los propósitos de esta discusión, la principal diferencia entre un lengua
 
 :::
 
-### Eval Function
+### Función Eval
 
-Most dynamic, interpreted languages have an `eval` function. For example, [Python `eval`](https://docs.python.org/3/library/functions.html#eval) (also, [Python `exec`](https://docs.python.org/3/library/functions.html#exec)) or [Bash `eval`](https://linux.die.net/man/1/bash).
+La mayoría de los lenguajes dinámicos e interpretados tienen una función `eval`. Por ejemplo, [Python `eval`](https://docs.python.org/3/library/functions.html#eval) (también, [Python `exec`](https://docs.python.org/3/library/functions.html#exec)) o [Bash `eval`](https://linux.die.net/man/1/bash).
 
+;;;;;;;;;;CONSULTAR;;;;;;;;;;;;;;;;
 The argument to an `eval` is _"source code inside of source code"_, typically conditionally or dynamically computed. This means that, when an interpreted language encounters an `eval` in source code during Parse/Eval, it typically interrupts the normal Evaluation process to start a new Parse/Eval on the source code argument to the `eval`.
-
+El argumento de un `eval` es _«código fuente dentro de código fuente»_, normalmente ejecutado de forma condicional o dinámica. Esto significa que, cuando un lenguaje interpretado encuentra un `eval` en el código fuente durante Parse/Eval (analizar/evaluar), normalmente interrumpe el proceso normal de Evaluación para iniciar un nuevo Parse/Eval en el argumento de código fuente del `eval`.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 Here's a simple Python `eval` example to demonstrate this (potentially confusing!) concept:
 
 ```python:line-numbers
