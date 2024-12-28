@@ -1,18 +1,18 @@
-# How Nushell Code Gets Run
+# Cómo se ejecuta el código Nushell
 
-In [Thinking in Nu](./thinking_in_nu.md#think-of-nushell-as-a-compiled-language), we encouraged you to _"Think of Nushell as a compiled language"_ due to the way in which Nushell code is processed. We also covered several code examples that won't work in Nushell due that process.
+En [Pensando en Nu](./thinking_in_nu.md#think-of-nushell-as-a-compiled-language), te animamos a _"pensar en Nushell como un lenguaje compilado"_ debido a cómo se procesa el código de Nushell. También cubrimos varios ejemplos de código que no funcionan en Nushell debido a ese proceso.
 
-The underlying reason for this is a strict separation of the **_parsing and evaluation_** stages that **_disallows `eval`-like functionality_**. In this section, we'll explain in detail what this means, why we're doing it, and what the implications are. The explanation aims to be as simple as possible, but it might help if you've programmed in another language before.
+La razón subyacente es una estricta separación de las etapas de **_análisis y evaluación (parsing and evaluation)_**, lo que **_impide la funcionalidad tipo `eval`_**. En esta sección, explicaremos en detalle qué significa esto, por qué lo hacemos y cuáles son las implicaciones. La explicación busca ser lo más sencilla posible, pero podría ayudarte haber programado en otro lenguaje antes.
 
 [[toc]]
 
-## Interpreted vs. Compiled Languages
+## Lenguajes interpretados vs compilados
 
-### Interpreted Languages
+### Lenguajes interpretados
 
-Nushell, Python, and Bash (and many others) are _"interpreted"_ languages.
+Nushell, Python y Bash (entre muchos otros) son lenguajes _"interpretados"_.
 
-Let's start with a simple "Hello, World!" Nushell program:
+Comencemos con un simple programa de Nushell que muestra "Hello, World!" (¡Hola, Mundo!):
 
 ```nu
 # hello.nu
