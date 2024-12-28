@@ -20,22 +20,22 @@ Comencemos con un simple programa de Nushell que muestra "Hello, World!" (¡Hola
 print "Hello, World!"
 ```
 
-Of course, this runs as expected using `nu hello.nu`. A similar program written in Python or Bash would look (and behave) nearly the same.
+Por supuesto, esto se ejecuta como se espera usando `nu hello.nu`. Un programa similar escrito en Python o Bash se vería (y se comportaría) casi igual.
 
-In _"interpreted languages"_ code usually gets handled something like this:
+En lenguajes _"interpretados"_ el código generalmente se maneja de la siguiente manera:
 
 ```
-Source Code → Interpreter → Result
+Código fuente (Source Code) → Intérprete (Interpreter) → Resultado (Result)
 ```
 
-Nushell follows this pattern, and its "Interpreter" is split into two parts:
+Nushell sigue este patrón, y su "intérprete" se divide en dos partes:
 
-1. `Source Code → Parser → Intermediate Representation (IR)`
-2. `IR → Evaluation Engine → Result`
+1. `Código fuente → Analizador (Parser) → Representación Intermedia (Intermediate Representations - IR)`
+2. `IR → Motor de evaluación (Evaluation Engine) → Resultado`
 
-First, the source code is analyzed by the Parser and converted into an intermediate representation (IR), which in Nushell's case is just a collection of data structures. Then, these data structures are passed to the Engine for evaluation and output of the results.
+Primero, el código fuente es analizado por el Parser y convertido en una representación intermedia (IR), que en el caso de Nushell es simplemente una colección de estructuras de datos. Luego, estas estructuras se pasan al motor (Engine) para su evaluación y salida de resultados.
 
-This, as well, is common in interpreted languages. For example, Python's source code is typically [converted into bytecode](https://github.com/python/cpython/blob/main/InternalDocs/interpreter.md) before evaluation.
+Esto, también, es común en los lenguajes interpretados. Por ejemplo, el código fuente de Python generalmente se [convierte en bytecode](https://github.com/python/cpython/blob/main/InternalDocs/interpreter.md) antes de la evaluación.
 
 ### Compiled Languages
 
