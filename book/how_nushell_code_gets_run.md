@@ -91,6 +91,7 @@ La mayoría de los lenguajes dinámicos e interpretados tienen una función `eva
 The argument to an `eval` is _"source code inside of source code"_, typically conditionally or dynamically computed. This means that, when an interpreted language encounters an `eval` in source code during Parse/Eval, it typically interrupts the normal Evaluation process to start a new Parse/Eval on the source code argument to the `eval`.
 El argumento de un `eval` es _«código fuente dentro de código fuente»_, normalmente ejecutado de forma condicional o dinámica. Esto significa que, cuando un lenguaje interpretado encuentra un `eval` en el código fuente durante Parse/Eval (analizar/evaluar), normalmente interrumpe el proceso normal de Evaluación para iniciar un nuevo Parse/Eval en el argumento de código fuente del `eval`.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 Here's a simple Python `eval` example to demonstrate this (potentially confusing!) concept:
 
 ```python:line-numbers
@@ -100,16 +101,16 @@ print("Hello, World!")
 eval("print('Hello, Eval!')")
 ```
 
-When you run the file (`python hello_eval.py`), you'll see two messages: _"Hello, World!"_ and _"Hello, Eval!"_. Here is what happens:
+Cuando ejecutas el archivo (`python hello_eval.py`), verás dos mensajes: _"Hello, World!"_ y _"Hello, Eval!_. Aquí está lo que sucede:
 
-1. The entire program is Parsed
-2. (Line 3) `print("Hello, World!")` is Evaluated
-3. (Line 4) In order to evaluate `eval("print('Hello, Eval!')")`:
-   1. `print('Hello, Eval!')` is Parsed
-   2. `print('Hello, Eval!')` is Evaluated
+1. Todo el programa es analizado (Parsed).
+2. (Línea 3) Se evalúa `print("¡Hola, Mundo!")`.
+3. (Línea 4) Para evaluar `eval("print('Hello, Eval!')")`:
+   1. `print('Hello, Eval!')` se analiza (Parsed).
+   2. `print('Hello, Eval!')` se evalúa. (Evaluated)
 
-::: tip More fun
-Consider `eval("eval(\"print('Hello, Eval!')\")")` and so on!
+::: tip Más diversión
+Considera `eval("eval(\"print('Hello, Eval!')\")")`¡y así sucesivamente!
 :::
 
 Notice how the use of `eval` here adds a new "meta" step into the execution process. Instead of a single Parse/Eval, the `eval` creates additional, "recursive" Parse/Eval steps instead. This means that the bytecode produced by the Python interpreter can be further modified during the evaluation.
