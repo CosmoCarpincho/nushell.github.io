@@ -92,7 +92,7 @@ The argument to an `eval` is _"source code inside of source code"_, typically co
 El argumento de un `eval` es _«código fuente dentro de código fuente»_, normalmente ejecutado de forma condicional o dinámica. Esto significa que, cuando un lenguaje interpretado encuentra un `eval` en el código fuente durante Parse/Eval (analizar/evaluar), normalmente interrumpe el proceso normal de Evaluación para iniciar un nuevo Parse/Eval en el argumento de código fuente del `eval`.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-Here's a simple Python `eval` example to demonstrate this (potentially confusing!) concept:
+Aquí hay un simple ejemplo de Python `eval` para demostrar este concepto (¡potencialmente confuso!):
 
 ```python:line-numbers
 # hello_eval.py
@@ -113,21 +113,21 @@ Cuando ejecutas el archivo (`python hello_eval.py`), verás dos mensajes: _"Hell
 Considera `eval("eval(\"print('Hello, Eval!')\")")`¡y así sucesivamente!
 :::
 
-Notice how the use of `eval` here adds a new "meta" step into the execution process. Instead of a single Parse/Eval, the `eval` creates additional, "recursive" Parse/Eval steps instead. This means that the bytecode produced by the Python interpreter can be further modified during the evaluation.
+Observe cómo el uso de `eval` aquí añade un nuevo paso «meta» en el proceso de ejecución. En lugar de un único Parse/Eval, `eval` crea pasos Parse/Eval «recursivos» adicionales. Esto significa que el bytecode producido por el intérprete de Python puede ser modificado durante la evaluación.
 
-Nushell does not allow this.
+Nushell no lo permite.
 
-As mentioned above, without an `eval` function to modify the bytecode during the interpretation process, there's very little difference (at a high level) between the Parse/Eval process of an interpreted language and that of the Compile/Run in compiled languages like C++ and Rust.
+Como se mencionó anteriormente, sin una función `eval` para modificar el bytecode durante el proceso de interpretación, hay muy poca diferencia (a un alto nivel) entre el proceso Parse/Eval de un lenguaje interpretado y el Compile/Run en lenguajes compilados como C++ y Rust.
 
-::: tip Takeaway
-This is why we recommend that you _"think of Nushell as a compiled language"_. Despite being an interpreted language, its lack of `eval` gives it some of the characteristic benefits as well as limitations common in traditional static, compiled languages.
+::: tip Idea clave
+Por eso recomendamos que _"pienses en Nushell como un lenguaje compilado"_. A pesar de ser un lenguaje interpretado, su falta de `eval` le da algunas de las ventajas características, así como limitaciones, comunes en los lenguajes compilados estáticos tradicionales.
 :::
 
-We'll dig deeper into what it means in the next section.
+Profundizaremos en su significado en la próxima sección.
 
-## Implications
+## Implicaciones
 
-Consider this Python example:
+Considera este ejemplo en Python:
 
 ```python:line-numbers
 exec("def hello(): print('Hello eval!')")
@@ -135,37 +135,38 @@ hello()
 ```
 
 ::: note
-We're using `exec` in this example instead of `eval` because it can execute any valid Python code rather than being limited to `eval` expressions. The principle is similar in both cases, though.
+En este ejemplo utilizamos `exec` en lugar de `eval` porque puede ejecutar cualquier código válido de Python, mientras que `eval` está limitado a expresiones. Sin embargo, el principio es similar en ambos casos.
 :::
 
-During interpretation:
+Durante la interpretación (interpretation):
 
-1. The entire program is Parsed
-2. In order to Evaluate Line 1:
-   1. `def hello(): print('Hello eval!')` is Parsed
-   2. `def hello(): print('Hello eval!')` is Evaluated
-3. (Line 2) `hello()` is evaluated.
+1. Todo el programa es Analizado. (Parsed)
+2. Para Evaluar (Evaluate) la Línea 1:
+   1. `def hello(): print('Hello eval!')` es Analizado (Parsed)
+   2. `def hello(): print('Hello eval!')` es Evaluado (Evaluated)
+3. (Línea 2) `hello()` es Evaluado (Evaluated).
 
-Note, that until step 2.2, the interpreter has no idea that a function `hello` even exists! This makes [static analysis](https://en.wikipedia.org/wiki/Static_program_analysis) of dynamic languages challenging. In this example, the existence of the `hello` function cannot be checked just by parsing (compiling) the source code. The interpreter must evaluate (run) the code to discover it.
+Observa que, hasta el paso 2.2, el intérprete no sabe que existe una función llamada `hello`. Esto hace que el [análisis estático](https://es.wikipedia.org/wiki/An%C3%A1lisis_est%C3%A1tico_de_programas) en lenguajes dinámicos sea un desafío. En este ejemplo, la existencia de la función `hello` no puede verificarse simplemente analizando (o compilando) el código fuente. El intérprete debe evaluar (ejecutar) el código para descubrirla.
 
-- In a static, compiled language, a missing function is guaranteed to be caught at compile-time.
+- En un lenguaje estático y compilado, la ausencia de una función se detecta de manera garantizada en tiempo de compilación (compile-time).
 - In a dynamic, interpreted language, however, it becomes a _possible_ runtime error. If the `eval`-defined function is conditionally called, the error may not be discovered until that condition is met in production.
+- Sin enbargo, en un lenguaje dinámico e interpretado, esto se convierte en un posible error en tiempo de ejecución. Si la función definida mediante `eval` se llama condicionalmente, el error podría no descubrirse hasta que esa condición se cumpla en producción.
 
 ::: important
-In Nushell, there are **exactly two steps**:
+En Nushell, hay **exactamente dos pasos**:
 
-1. Parse the entire source code
-2. Evaluate the entire source code
+1. Analizar todo el código fuente. (Parse)
+2. Evaluar todo el código fuente. (Evaluate)
 
-This is the complete Parse/Eval sequence.
+Esta es la secuencia completa de Análisis/Evaluación (Parse/Eval).
 :::
 
-::: tip Takeaway
-By not allowing `eval`-like functionality, Nushell prevents these types of `eval`-related bugs. Calling a non-existent definition is guaranteed to be caught at parse-time in Nushell.
+::: tip Consejo
+Al no permitir funcionalidades similares a `eval`, Nushell previene estos tipos de errores relacionados con `eval`. Llamar a una definición inexistente se detecta de manera garantizada en tiempo de análisis (parse-time) en Nushell.
 
-Furthermore, after parsing completes, we can be certain the bytecode (IR) won't change during evaluation. This gives us a deep insight into the resulting bytecode (IR), allowing for powerful and reliable static analysis and IDE integration which can be challenging to achieve with more dynamic languages.
+Además, una vez completado el análisis sintáctico (parsing), podemos estar seguros de que el código de bytes (IR) no cambiará durante la evaluación. Esto nos da una visión profunda del código de bytes (IR) resultante, lo que permite un análisis estático potente y fiable y la integración IDE que puede ser difícil de lograr con lenguajes más dinámicos.
 
-In general, you have more peace of mind that errors will be caught earlier when scaling Nushell programs.
+En general, tiene más tranquilidad de que los errores se detectarán antes al escalar programas Nushell.
 :::
 
 ## The Nushell REPL
