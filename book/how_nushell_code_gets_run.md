@@ -145,8 +145,7 @@ Durante la interpretación (interpretation):
 Observa que, hasta el paso 2.2, el intérprete no sabe que existe una función llamada `hello`. Esto hace que el [análisis estático](https://es.wikipedia.org/wiki/An%C3%A1lisis_est%C3%A1tico_de_programas) en lenguajes dinámicos sea un desafío. En este ejemplo, la existencia de la función `hello` no puede verificarse simplemente analizando (o compilando) el código fuente. El intérprete debe evaluar (ejecutar) el código para descubrirla.
 
 - En un lenguaje estático y compilado, la ausencia de una función se detecta de manera garantizada en tiempo de compilación (compile-time).
-- In a dynamic, interpreted language, however, it becomes a _possible_ runtime error. If the `eval`-defined function is conditionally called, the error may not be discovered until that condition is met in production.
-- Sin enbargo, en un lenguaje dinámico e interpretado, esto se convierte en un posible error en tiempo de ejecución. Si la función definida mediante `eval` se llama condicionalmente, el error podría no descubrirse hasta que esa condición se cumpla en producción.
+- Sin enbargo, en un lenguaje dinámico e interpretado, esto se convierte en un _posible_ error en tiempo de ejecución (runtime). Si la función definida mediante `eval` se llama condicionalmente, el error podría no descubrirse hasta que esa condición se cumpla en producción.
 
 ::: important
 En Nushell, hay **exactamente dos pasos**:
