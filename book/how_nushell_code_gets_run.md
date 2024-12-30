@@ -207,7 +207,7 @@ Cuando presionas <kbd>Enter</kbd> después de escribir un comando, Nushell:
 1. **_(Imprimir -Print-):_** Muestra los resultados (si no son `null`).
 1. **_(Bucle -Loop-):_** Espera otra entrada.
 
-In other words, each REPL invocation is its own separate parse-evaluation sequence. By merging the environment back to the Nushell's state, we maintain continuity between the REPL invocations.
+En otras palabras, cada invocación del REPL es su propia secuencia independiente de análisis-evaluación (parse-evaluation). Al fusionar el entorno nuevamente en el estado de Nushell, se mantiene la continuidad entre las invocaciones del REPL.
 
 Compare a simplified version of the [`cd` example](./thinking_in_nu.md#example-change-to-a-different-directory-cd-and-source-a-file) from _"Thinking in Nu"_:
 
@@ -216,27 +216,27 @@ cd spam
 source-env foo.nu
 ```
 
-There we saw that this cannot work (as a script or other single expression) because the directory will be changed _after_ the parse-time [`source-env` keyword](/commands/docs/source-env.md) attempts to read the file.
+Vimos que esto no puede funcionar (como script u otra expresión única) porque el cambio de directorio ocurre _después_ de que la palabra clave [`source-env`](/commands/docs/source-env.md) intente leer el archivo en tiempo de análisis (parse-time).
 
-Running these commands as separate REPL entries, however, works:
+Sin embargo, ejecutar estos comandos como entradas separadas en el REPL sí funciona:
 
 ```nu
 > cd spam
 > source-env foo.nu
-# Yay, works!
+# Yay, ¡Funciona!
 ```
 
-To see why, let's break down what happens in the example:
+Para entender por qué, analicemos qué sucede en el ejemplo:
 
-1. Read the `cd spam` commandline.
-2. Parse the `cd spam` commandline.
-3. Evaluate the `cd spam` commandline.
-4. Merge environment (including the current directory) into the Nushell state.
-5. Read and Parse `source-env foo.nu`.
-6. Evaluate `source-env foo.nu`.
-7. Merge environment (including any changes from `foo.nu`) into the Nushell state.
+1. Lee el comando `cd spam`.
+2. Analiza (parse) el comando `cd spam`.
+3. Evalúa el comando `cd spam`.
+4. Fusiona (merge) el entorno (incluido el directorio actual) en el estado de Nushell.
+5. Lee y analiza (parse) `source-env foo.nu`.
+6. Evalúa `source-env foo.nu`.
+7. Fusiona (merge) el entorno (incluidos los cambios realizados por `foo.nu`) en el estado de Nushell.
 
-When `source-env` tries to open `foo.nu` during the parsing in Step 5, it can do so because the directory change from Step 3 was merged into the Nushell state during Step 4. As a result, it's visible in the following Parse/Eval cycles.
+Cuando `source-env` intenta abrir `foo.nu` durante el análisis (parsing) en el Paso 5, puede hacerlo porque el cambio de directorio del Paso 3 se fusionó con el estado de Nushell en el Paso 4. Por lo tanto, es visible en los siguientes ciclos de Análisis/Evaluación (Parse/Eval).
 
 ### Multiline REPL Commandlines
 
