@@ -106,7 +106,7 @@ Cuando ejecutas el archivo (`python hello_eval.py`), verás dos mensajes: _"Hell
    2. `print('Hello, Eval!')` se evalúa. (Evaluated)
 
 ::: tip Más diversión
-Considera `eval("eval(\"print('Hello, Eval!')\")")`¡y así sucesivamente!
+Considera `eval("eval(\"print('Hello, Eval!')\")")` ¡y así sucesivamente!
 :::
 
 Observe cómo el uso de `eval` aquí añade un nuevo paso «meta» en el proceso de ejecución. En lugar de un único Parse/Eval, `eval` crea pasos Parse/Eval «recursivos» adicionales. Esto significa que el bytecode producido por el intérprete de Python puede ser modificado durante la evaluación.
