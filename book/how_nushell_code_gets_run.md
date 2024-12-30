@@ -300,23 +300,23 @@ Analicemos el proceso de análisis y evaluación (Parse/Eval) para esta versión
 
 1. Todo el programa se analiza (Parse) en IR:
 
-   1. Line 1: The `const` definition is parsed. Because it is a constant assignment (and `const` is also a parser-keyword), that assignment can also be Evaluated at this stage. Its name and value are stored by the Parser.
-   2. Line 2: The `source` command is parsed. Because `source` is also a parser-keyword, it is Evaluated at this stage. In this example, however, it can be **_successfully_** parsed since its argument is **_known_** and can be retrieved at this point.
-   3. The source-code of `~/nushell-files/common.nu` is parsed. If it is invalid, then an error will be generated, otherwise the IR results will be included in evaluation in the next stage.
+   1. Línea 1: La definición de `const` se analiza (parsed). Como es una asignación constante (y `const` también es una palabra clave del parser), esa asignación también se evalúa en esta etapa. Su nombre y valor se almacenan en el Parser.   
+   2. Línea 2: El comando `source` se analiza (parsed). Dado que `source` es también una palabra clave del Parser, se evalúa en esta etapa. En este ejemplo, se puede analizar (parsed) correctamente ya que su argumento es **_conocido_** y puede recuperarse en este punto.
+   3. El código fuente de `~/nushell-files/common.nu` se analiza (parsed). Si es inválido, se generará un error; de lo contrario, los resultados de IR se incluirán en la evaluación en la siguiente etapa.
 
-2. The entire IR is Evaluated:
-   1. Line 1: The `const` definition is Evaluated. The variable is added to the runtime stack.
-   2. Line 2: The IR result from parsing `~/nushell-files/common.nu` is Evaluated.
+2. Todo el IR se evalúa:
+   1. Línea 1: La definición de `const` se evalúa. La variable se agrega a la pila en tiempo de ejecución (runtime stack).
+   2. Línea 2: El resultado de IR del análisis (parsing) de `~/nushell-files/common.nu` se evalúa (Evaluated).
 
-::: important
+::: important Importante
 
-- An `eval` adds additional parsing during evaluation
-- Parse-time constants do the opposite, adding additional evaluation to the parser.
+- Un `eval` añade análisis adicional (additional parsing) durante la evaluación.
+- Las constantes en tiempo de análisis (Parse-time) hacen lo opuesto: añaden evaluación adicional al parser.
   :::
 
-Also keep in mind that the evaluation allowed during parsing is **_very restricted_**. It is limited to only a small subset of what is allowed during a regular evaluation.
+Ten en cuenta que la evaluación permitida durante el análisis es **_muy restringida_**. Está limitada a un pequeño subconjunto de lo permitido durante una evaluación normal.
 
-For example, the following is not allowed:
+Por ejemplo, lo siguiente no está permitido:
 
 ```nu
 const foo_contents = (open foo.nu)
