@@ -64,7 +64,6 @@ Entonces:
 2. `Código máquina ⇒ CPU ⇒ Resultado` (Machine Code ⇒ CPU ⇒ Result)
 
 ::: important
-You can see that the compile-run sequence is not much different from the parse-evaluate sequence of an interpreter. You begin with source code, parse (or compile) it into some state (e.g., bytecode, IR, machine code), then evaluate (or run) the IR to get a result. You could think of machine code as just another type of IR and the CPU as its interpreter.
 Puedes ver que la secuencia compilar-ejecutar (compile-run) no es muy diferente de la secuencia analizar-evaluar (parse-evaluate) de un intérprete. Comienzas con código fuente, lo analizas "parseas" (o compilas) en algún estado (p. ej., bytecode, IR, código máquina), luego evalúas (o ejecutas) el IR para obtener un resultado. Podrías pensar en el código máquina como otro tipo de IR y en la CPU como su intérprete.
 
 Una gran diferencia, sin embargo, entre los lenguajes interpretados y compilados es que los lenguajes interpretados generalmente implementan una función _`eval`_, mientras que los lenguajes compilados no. ¿Qué significa esto?
@@ -87,10 +86,7 @@ Para los propósitos de esta discusión, la principal diferencia entre un lengua
 
 La mayoría de los lenguajes dinámicos e interpretados tienen una función `eval`. Por ejemplo, [Python `eval`](https://docs.python.org/3/library/functions.html#eval) (también, [Python `exec`](https://docs.python.org/3/library/functions.html#exec)) o [Bash `eval`](https://linux.die.net/man/1/bash).
 
-;;;;;;;;;;CONSULTAR;;;;;;;;;;;;;;;;
-The argument to an `eval` is _"source code inside of source code"_, typically conditionally or dynamically computed. This means that, when an interpreted language encounters an `eval` in source code during Parse/Eval, it typically interrupts the normal Evaluation process to start a new Parse/Eval on the source code argument to the `eval`.
-El argumento de un `eval` es _«código fuente dentro de código fuente»_, normalmente ejecutado de forma condicional o dinámica. Esto significa que, cuando un lenguaje interpretado encuentra un `eval` en el código fuente durante Parse/Eval (analizar/evaluar), normalmente interrumpe el proceso normal de Evaluación para iniciar un nuevo Parse/Eval en el argumento de código fuente del `eval`.
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+El argumento de un `eval` es _«código fuente dentro de código fuente»_, normalmente ejecutado de forma condicional o dinámica. Esto significa que, cuando un lenguaje interpretado encuentra un `eval` en el código fuente durante Parse/Eval (analizar/evaluar), normalmente interrumpe el proceso normal de Evaluación para iniciar un nuevo Parse/Eval en el argumento del código fuente del `eval`.
 
 Aquí hay un simple ejemplo de Python `eval` para demostrar este concepto (¡potencialmente confuso!):
 
@@ -169,47 +165,47 @@ Además, una vez completado el análisis sintáctico (parsing), podemos estar se
 En general, tiene más tranquilidad de que los errores se detectarán antes al escalar programas Nushell.
 :::
 
-## The Nushell REPL
+## El REPL de Nushell
 
-As with most any shell, Nushell has a _"Read→Eval→Print Loop"_ ([REPL](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop)) that is started when you run `nu` without any file. This is often thought of, but isn't quite the same, as the _"commandline"_.
+Como en la mayoría de los shells, Nushell tiene un bucle de _"Leer→Evaluar→Imprimir"_ (Read→Eval→Print Loop) ([REPL](https://es.wikipedia.org/wiki/REPL)) que se inicia cuando ejecutas `nu` sin especificar un archivo. A menudo se piensa en esto como el _"prompt"_ de línea de comandos.
 
-::: tip Note
-In this section, the `> ` character at the beginning of a line in a code-block is used to represent the commandline **_prompt_**. For instance:
+::: tip Nota
+En esta sección, el carácter `> ` al inicio de una línea en un bloque de código representa el **_prompt_** del shell. Por ejemplo:
 
 ```nu
-> some code...
+> algún código...
 ```
 
-Code after the prompt in the following examples is executed by pressing the <kbd>Enter</kbd> key. For example:
+El código después del prompt se ejecuta presionando la tecla <kbd>Enter</kbd>. Por ejemplo:
 
 ```nu
 > print "Hello world!"
 # => Hello world!
 
 > ls
-# => prints files and directories...
+# => muestra archivos y directorios...
 ```
 
-The above means:
+Esto significa:
 
-- From inside Nushell (launched with `nu`):
-  1. Type `print "Hello world!"`
-  1. Press <kbd>Enter</kbd>
-  1. Nushell will display the result
-  1. Type `ls`
-  1. Press <kbd>Enter</kbd>
-  1. Nushell will display the result
+- Desde dentro de Nushell (iniciado con `nu`):
+  1. Escribe `print "Hello world!"`
+  1. Presiona <kbd>Enter</kbd>.
+  1. Nushell mostrará el resultado.
+  1. Escribe `ls`
+  1. Presiona <kbd>Enter</kbd>.
+  1. Nushell mostrará el resultado.
 
 :::
 
-When you press <kbd>Enter</kbd> after typing a commandline, Nushell:
+Cuando presionas <kbd>Enter</kbd> después de escribir un comando, Nushell:
 
-1. **_(Read):_** Reads the commandline input
-1. **_(Evaluate):_** Parses the commandline input
-1. **_(Evaluate):_** Evaluates the commandline input
-1. **_(Evaluate):_** Merges the environment (such as the current working directory) to the internal Nushell state
-1. **_(Print):_** Displays the results (if non-`null`)
-1. **_(Loop):_** Waits for another input
+1. **_(Leer -Read-):_** Lee la entrada de la línea de comandos.
+1. **_(Evaluar -Evaluate-):_** Analiza (Parse) la entrada de la línea de comandos. 
+1. **_(Evaluar -Evaluate-):_** Evalúa la entrada de la línea de comandos.
+1. **_(Evaluar -Evaluate-):_** Fusiona el entorno -environment- (como el directorio actual) con el estado interno de Nushell.
+1. **_(Imprimir -Print-):_** Muestra los resultados (si no son `null`).
+1. **_(Bucle -Loop-):_** Espera otra entrada.
 
 In other words, each REPL invocation is its own separate parse-evaluation sequence. By merging the environment back to the Nushell's state, we maintain continuity between the REPL invocations.
 
