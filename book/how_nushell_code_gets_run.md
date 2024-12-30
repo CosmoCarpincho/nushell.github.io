@@ -323,14 +323,15 @@ const foo_contents = (open foo.nu)
 ```
 
 Put differently, only a small subset of commands and expressions can generate a constant value. For a command to be allowed:
+En otras palabras, solo un pequeño subconjunto de comandos y expresiones puede generar un valor constante. Para que un comando sea permitido:
 
-- It must be designed to output a constant value
-- All of its inputs must also be constant values, literals, or composite types (e.g., records, lists, tables) of literals.
+- Debe estar diseñado para producir un valor constante.
+- Todas sus entradas también deben ser valores constantes, literales o tipos compuestos (como registros (records), listas o tablas) de literales.
 
-In general, the commands and resulting expressions will be fairly simple and **_without side effects_**. Otherwise, the parser could all-too-easily enter an unrecoverable state. Imagine, for instance, attempting to assign an infinite stream to a constant. The Parse stage would never complete!
+En general, los comandos y expresiones resultantes serán bastante simples y **_sin efectos secundarios_**(side effects). De lo contrario, el parser podría entrar fácilmente en un estado irrecuperable. Imagina, por ejemplo, intentar asignar un flujo infinito a una constante. ¡La etapa de análisis (Parse stage) nunca terminaría!
 
 ::: tip
-You can see which Nushell commands can return constant values using:
+Puedes ver qué comandos de Nushell pueden devolver valores constantes usando:
 
 ```nu
 help commands | where is_const
@@ -338,33 +339,33 @@ help commands | where is_const
 
 :::
 
-For example, the `path join` command can output a constant value. Nushell also defines several useful paths in the `$nu` constant record. These can be combined to create useful parse-time constant evaluations like:
+Por ejemplo, el comando `path join` puede producir un valor constante. Nushell también define varias rutas útiles en el registro (record) constante `$nu`. Estas pueden combinarse para crear evaluaciones constantes en tiempo de análisis (parse-time) como:
 
 ```nu
 const my_startup_modules =  $nu.default-config-dir | path join "my-mods"
 use $"($my_startup_modules)/my-utils.nu"
 ```
 
-::: note Additional Notes
-Compiled ("static") languages also tend to have a way to convey some logic at compile time. For instance:
+::: note Notas adicionales
+Los lenguajes compilados ("estáticos") también suelen tener formas de transmitir cierta lógica en tiempo de compilación. Por ejemplo:
 
-- C's preprocessor
-- Rust macros
-- [Zig's comptime](https://kristoff.it/blog/what-is-zig-comptime), which was an inspiration for Nushell's parse-time constant evaluation.
+- El preprocesador de C
+- Macros de Rust
+- [El `comptime` de Zig](https://kristoff.it/blog/what-is-zig-comptime),  sirvió de inspiración para la evaluación de constantes en tiempo de análisis sintáctico (parte-time) de Nushell.
 
-There are two reasons for this:
+Existen dos razones para esto:
 
-1. _Increasing Runtime Performance:_ Logic in the compilation stage doesn't need to be repeated during runtime.
+1. _Aumentar el rendimiento en tiempo de ejecución (Runtime):_ La lógica en la etapa de compilación no necesita repetirse durante la ejecución.
 
-   This isn't currently applicable to Nushell, since the parsed results (IR) are not stored beyond Evaluation. However, this has certainly been considered as a possible future feature.
+   Esto actualmente no aplica a Nushell, ya que los resultados analizados (IR) no se almacenan más allá de la Evaluación. Sin embargo, esto se ha considerado como una posible función futura.
 
-2. As with Nushell's parse-time constant evaluations, these features help (safely) work around limitations caused by the absence of an `eval` function.
+2. Al igual que con las evaluaciones constantes en tiempo de análisis (parse-time) de Nushell, estas características ayudan (de manera segura -safely-) a superar limitaciones causadas por la ausencia de una función `eval`.
    :::
 
-## Conclusion
+## Conclusión
 
-Nushell operates in a scripting language space typically dominated by _"dynamic"_, _"interpreted"_ languages, such as Python, Bash, Zsh, Fish, and many others. Nushell is also _"interpreted"_ since code is run immediately (without a separate, manual compilation).
+Nushell opera en el espacio de los lenguajes de scripting típicamente dominados por lenguajes _"dinámicos"_ e _"interpretados"_, como Python, Bash, Zsh, Fish y muchos otros. Nushell también es _"interpretado"_ porque el código se ejecuta inmediatamente (sin una compilación manual separada).
 
-However, is not _"dynamic"_ in that it does not have an `eval` construct. In this respect, it shares more in common with _"static"_, compiled languages like Rust or Zig.
+Sin embargo, no es _"dinámico"_ porque no tiene una construcción `eval` (eval construct). En este sentido, comparte más similitudes con lenguajes _"estáticos"_ y compilados como Rust o Zig.
 
-This lack of `eval` is often surprising to many new users and is why it can be helpful to think of Nushell as a compiled, and static, language.
+Esta falta de `eval` suele sorprender a muchos usuarios nuevos, y por ello puede ser útil pensar en Nushell como un lenguaje compilado y estático.
