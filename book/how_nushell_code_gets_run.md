@@ -238,65 +238,67 @@ Para entender por qué, analicemos qué sucede en el ejemplo:
 
 Cuando `source-env` intenta abrir `foo.nu` durante el análisis (parsing) en el Paso 5, puede hacerlo porque el cambio de directorio del Paso 3 se fusionó con el estado de Nushell en el Paso 4. Por lo tanto, es visible en los siguientes ciclos de Análisis/Evaluación (Parse/Eval).
 
-### Multiline REPL Commandlines
+### Líneas de comando multilínea en el REPL (Multiline REPL Commandlines)
 
-Keep in mind that this only works for **_separate_** commandlines.
+Ten en cuenta que esto solo funciona para líneas de comando **_separadas_**.
 
-In Nushell, it's possible to group multiple commands into one commandline using:
+En Nushell, es posible agrupar múltiples comandos en una sola línea de comando usando:
 
-- A semicolon:
+- Un punto y coma:
 
   ```nu
   cd spam; source-env foo.nu
   ```
 
-- A newline:
+- Una nueva línea:
 
   ```
   > cd span
     source-env foo.nu
   ```
 
-  Notice there is no "prompt" before the second line. This type of multiline commandline is usually created with a [keybinding](./line_editor.md#keybindings) to insert a Newline when <kbd>Alt</kbd>+<kbd>Enter</kbd> or <kbd>Shift</kbd>+ <kbd>Enter</kbd> is pressed.
+  Nota que no hay un "prompt" antes de la segunda línea. Este tipo de línea de comando multilínea generalmente se crea con una [asignación de teclas (keybinding)](./line_editor.md#keybindings) para insertar una nueva línea al presionar <kbd>Alt</kbd>+<kbd>Enter</kbd> o <kbd>Shift</kbd>+<kbd>Enter</kbd>.
 
-These two examples behave exactly the same in the Nushell REPL. The entire commandline (both statements) are processed a single Read→Eval→Print Loop. As such, they will fail the same way that the earlier script-example did.
+Ambos ejemplos se comportan exactamente igual en el REPL de Nushell. Toda la línea de comando (ambas instrucciones) se procesan en un solo ciclo de _Leer→Evaluar→Imprimir_ (Read→Eval→Print Loop). Por lo tanto, fallarán de la misma manera que el ejemplo anterior con el script.
+
 
 ::: tip
-Multiline commandlines are very useful in Nushell, but watch out for any out-of-order Parser-keywords.
+Las líneas de comando multilínea son muy útiles en Nushell, pero presta atención a palabras clave del Parser que estén fuera de orden.
 :::
 
-## Parse-time Constant Evaluation
+## Evaluación constante en tiempo de análisis (Parse-time Constant Evaluation)
 
-While it is impossible to add parsing into the evaluation stage and yet still maintain our static-language benefits, we can safely add _a little bit_ of evaluation into parsing.
+Si bien es imposible añadir análisis (parsing) en la etapa de evaluación y aún mantener los beneficios de un lenguaje estático, es seguro añadir _un poco_ de evaluación al análisis.
 
-::: tip Terminology
+::: tip Terminología
 In the text below, we use the term _"constant"_ to refer to:
+En el texto siguiente, usamos el término _"constante"_ (constant) para referirnos a:
 
-- A `const` definition
-- The result of any command that outputs a constant value when provide constant inputs.
+- Una definición `const`.
+- El resultado de cualquier comando que produzca un valor constante cuando se le proporcionan entradas constantes.
   :::
 
-By their nature, **_constants_** and constant values are known at Parse-time. This, of course, is in sharp contrast to _variable_ declarations and values.
+Por su naturaleza, las **_constantes_** y sus valores son conocidos en tiempo de análisis (parse-time). Esto contrasta fuertemente con las declaraciones y valores de _variables_.
 
-As a result, we can utilize constants as safe, known arguments to parse-time keywords like [`source`](/commands/docs/source.md), [`use`](/commands/docs/use.md), and related commands.
+Como resultado, podemos utilizar constantes como argumentos seguros y conocidos para palabras clave del tiempo de analisis (parse-time keywords), como [`source`](/commands/docs/source.md), [`use`](/commands/docs/use.md) y comandos relacionados.
 
-Consider [this example](./thinking_in_nu.md#example-dynamically-creating-a-filename-to-be-sourced) from _"Thinking in Nu"_:
+Considera [este ejemplo](./thinking_in_nu.md#example-dynamically-creating-a-filename-to-be-sourced) de _"Thinking in Nu"_:
 
 ```nu
 let my_path = "~/nushell-files"
 source $"($my_path)/common.nu"
 ```
 
-As noted there, we **_can_**, however, do the following instead:
+Sin embargo, podemos hacer lo siguiente en su lugar:
 
 ```nu:line-numbers
 const my_path = "~/nushell-files"
 source $"($my_path)/common.nu"
 ```
 
-Let's analyze the Parse/Eval process for this version:
+Analicemos el proceso de análisis y evaluación (Parse/Eval) para esta versión:
 
-1. The entire program is Parsed into IR.
+1. Todo el programa se analiza (Parse) en IR:
 
    1. Line 1: The `const` definition is parsed. Because it is a constant assignment (and `const` is also a parser-keyword), that assignment can also be Evaluated at this stage. Its name and value are stored by the Parser.
    2. Line 2: The `source` command is parsed. Because `source` is also a parser-keyword, it is Evaluated at this stage. In this example, however, it can be **_successfully_** parsed since its argument is **_known_** and can be retrieved at this point.
